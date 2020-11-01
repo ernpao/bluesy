@@ -3,36 +3,41 @@ import 'package:provider/provider.dart';
 import '../framework/bluesy_service.dart';
 
 abstract class BluesyWidget extends StatefulWidget {
-  String get widgetName;
+  /// The key assosciated with the property value of this widget
+  final String propertyKey;
+
+  BluesyWidget(this.propertyKey);
 
   @override
   _BluesyWidgetState createState() {
     return _BluesyWidgetState();
   }
 
+  /// Builder method for a Bluesy widget. You can pass an integer to
+  /// the [setPropertyValue] method provided. Doing so will send a key-value pair
+  /// message to the paired bluetooth device, with the key being the [propertyKey]
+  /// string of the Bluesy widget.
+
   Widget build(
     BuildContext context,
-    void Function(int newValue) setValueCallback,
-    int currentValue,
+    void Function(int value) setPropertyValue,
+    int currentPropertyValue,
   );
 }
 
 class _BluesyWidgetState extends State<BluesyWidget> {
-  int _value = 0;
-  String _name;
+  int _propertyValue = 0;
   BluesyService _bluetoothService;
 
   @override
   void initState() {
-    _name = widget.widgetName;
-
     super.initState();
   }
 
-  void setValue(int newValue) {
-    _bluetoothService.send("$_name,$newValue;");
+  void _setPropertyValue(int value) {
+    _bluetoothService.send("${widget.propertyKey},$value;");
     setState(() {
-      _value = newValue;
+      _propertyValue = value;
     });
   }
 
@@ -45,14 +50,14 @@ class _BluesyWidgetState extends State<BluesyWidget> {
       int commaPos = message.lastIndexOf(",");
       int delimiterPos = message.lastIndexOf(";");
       String key = message.substring(0, commaPos);
-      if (key == _name) {
+      if (key == widget.propertyKey) {
         String valueStr = message.substring(commaPos + 1, delimiterPos);
         int value = int.parse(valueStr);
         setState(() {
-          _value = value;
+          _propertyValue = value;
         });
       }
     });
-    return widget.build(context, setValue, _value);
+    return widget.build(context, _setPropertyValue, _propertyValue);
   }
 }
