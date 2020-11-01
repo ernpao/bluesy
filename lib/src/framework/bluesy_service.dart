@@ -6,12 +6,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 abstract class BluesyService extends ChangeNotifier {
+  /// The name of the Bluetooth device to pair to
   String get deviceName;
+
+  /// Connect to the device identified by [deviceName]
   Future<void> connect();
+
+  /// Terminate the connection with the paired Bluetooth device
   Future<void> disconnect();
+
+  /// Send a UTF8 encoded string to the Bluetooth device
   void send(String message);
+
+  /// Adds a listener for Bluetooth messages
   void addBluetoothListener(void Function(String message) listener);
+
+  /// Flag that determines if the mobile device is paired with the
+  /// target device identified by [deviceName]
   bool get isConnected;
+
+  /// Flag that determines if the mobile device is attempting
+  /// to connect with the
+  /// target device identified by [deviceName]
   bool get isConnecting;
 }
 
