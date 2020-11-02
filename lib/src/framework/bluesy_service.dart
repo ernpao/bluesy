@@ -32,7 +32,7 @@ abstract class BluesyService extends ChangeNotifier {
 }
 
 class BluesyHC05 extends BluesyService {
-  final String _deviceName;
+  final String _deviceName = "HC-05";
 
   bool _isConnecting = false;
   BluetoothDevice _device;
@@ -40,8 +40,6 @@ class BluesyHC05 extends BluesyService {
 
   String _message = "";
   List<Function> _listeners = List();
-
-  BluesyHC05(String deviceName) : _deviceName = deviceName;
 
   @override
   void dispose() {
