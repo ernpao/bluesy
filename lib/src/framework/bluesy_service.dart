@@ -31,8 +31,10 @@ abstract class BluesyService extends ChangeNotifier {
   bool get isConnecting;
 }
 
-class BluesyHC05 extends BluesyService {
-  final String _deviceName = "HC-05";
+class BluesyGenericService extends BluesyService {
+  final String pairedDeviceName;
+
+  BluesyGenericService(this.pairedDeviceName);
 
   bool _isConnecting = false;
   BluetoothDevice _device;
@@ -64,7 +66,7 @@ class BluesyHC05 extends BluesyService {
     FlutterBluetoothSerial.instance.getBondedDevices().then((devices) {
       for (var i = 0; i < devices.length; i++) {
         var device = devices[i];
-        if (device.name == _deviceName) {
+        if (device.name == pairedDeviceName) {
           _device = device;
           _isConnecting = true;
           notifyListeners();
@@ -125,5 +127,9 @@ class BluesyHC05 extends BluesyService {
   }
 
   @override
-  String get deviceName => _deviceName;
+  String get deviceName => pairedDeviceName;
+}
+
+class BluesyHC05 extends BluesyGenericService {
+  BluesyHC05() : super("HC-05");
 }
