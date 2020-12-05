@@ -1,3 +1,8 @@
+## [0.0.2] - 12/5/2020
+
+* Renamed the SerialBluetoothToggleSwitch widget to BluesyToggleSwitch
+
+
 ## [0.0.1] - Initial release.
 
 * Initial implementation of BluesyService and BluesyServiceProvider classes for handling Bluetooth functions.

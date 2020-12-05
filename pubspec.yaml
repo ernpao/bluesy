@@ -1,6 +1,6 @@
 name: bluesy
 description: A Flutter widget library for serial Bluetooth communication between smart phones and microcontrollers.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/ernpao/bluesy
 
 environment:

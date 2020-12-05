@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import '../widgets/bluesy_widget.dart';
 
-class SerialBluetoothToggleSwitch extends BluesyWidget {
-  SerialBluetoothToggleSwitch(String propertyName) : super(propertyName);
+class BluesyToggleSwitch extends BluesyWidget {
+  BluesyToggleSwitch(String propertyName) : super(propertyName);
 
   @override
   Widget build(
