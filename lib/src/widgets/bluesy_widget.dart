@@ -9,9 +9,7 @@ abstract class BluesyWidget extends StatefulWidget {
   BluesyWidget(this.propertyKey);
 
   @override
-  _BluesyWidgetState createState() {
-    return _BluesyWidgetState();
-  }
+  _BluesyWidgetState createState() => _BluesyWidgetState();
 
   /// Builder method for a Bluesy widget. You can pass an integer to
   /// the [propertyValueSetter] function provided. Doing so will send a key-value pair

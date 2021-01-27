@@ -41,7 +41,7 @@ class BluesyGenericService extends BluesyService {
   BluetoothConnection _connection;
 
   String _message = "";
-  List<Function> _listeners = List();
+  List<Function> _listeners = [];
 
   @override
   void dispose() {
@@ -115,7 +115,7 @@ class BluesyGenericService extends BluesyService {
   Future<void> disconnect({bool notifyListeners = true}) async {
     _connection?.dispose();
     _connection = null;
-    _listeners = new List();
+    _listeners = [];
     if (notifyListeners) {
       this.notifyListeners();
     }

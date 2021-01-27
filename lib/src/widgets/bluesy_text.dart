@@ -7,7 +7,7 @@ class BluesyText extends BluesyWidget {
   @override
   Widget build(
     BuildContext context,
-    void Function(int newValue) setPropertyValue,
+    void Function(int newValue) propertyValueSetter,
     int currentValue,
   ) {
     return Text("$propertyKey: $currentValue");

@@ -7,13 +7,13 @@ class BluesyToggleSwitch extends BluesyWidget {
   @override
   Widget build(
     BuildContext context,
-    void Function(int newValue) setPropertyValue,
+    void Function(int newValue) propertyValueSetter,
     int currentValue,
   ) {
     return CupertinoSwitch(
       value: currentValue == 1 ? true : false,
       onChanged: (isSwitchActive) {
-        setPropertyValue(isSwitchActive ? 1 : 0);
+        propertyValueSetter(isSwitchActive ? 1 : 0);
       },
     );
   }
