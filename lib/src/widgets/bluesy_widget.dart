@@ -45,7 +45,7 @@ class _BluesyWidgetState extends State<BluesyWidget> {
   Widget build(BuildContext context) {
     _bluetoothService = Provider.of<BluesyService>(context);
     _bluetoothService.addBluetoothListener((message) {
-      print("Received message from Bluesy: " + message);
+      // print("Received message from Bluesy: " + message);
 
       int commaPos = message.lastIndexOf(",");
       int delimiterPos = message.lastIndexOf(";");
