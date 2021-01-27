@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../framework/bluesy_service.dart';
 
 abstract class BluesyWidget extends StatefulWidget {
-  /// The key assosciated with the property value of this widget
+  /// The key string assosciated with the property value of this widget
   final String propertyKey;
 
   BluesyWidget(this.propertyKey);
@@ -14,13 +14,13 @@ abstract class BluesyWidget extends StatefulWidget {
   }
 
   /// Builder method for a Bluesy widget. You can pass an integer to
-  /// the [setPropertyValue] method provided. Doing so will send a key-value pair
+  /// the [propertyValueSetter] function provided. Doing so will send a key-value pair
   /// message to the paired bluetooth device, with the key being the [propertyKey]
   /// string of the Bluesy widget.
 
   Widget build(
     BuildContext context,
-    void Function(int value) setPropertyValue,
+    void Function(int value) propertyValueSetter,
     int currentPropertyValue,
   );
 }
