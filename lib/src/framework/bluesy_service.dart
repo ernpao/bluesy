@@ -15,10 +15,21 @@ abstract class BluesyService extends ChangeNotifier {
   /// Terminate the connection with the paired Bluetooth device
   Future<void> disconnect();
 
-  /// Send a UTF8 encoded string to the Bluetooth device
+  /// Send a UTF8 encoded key-value string to the Bluetooth device.
+  ///
+  /// Messages must be of the format [key] (a string) -> comma -> [value] (an integer) -> semi-colon.
+  ///
+  /// Example: "sensor_reading,123;" where the [key] is "sensor_reading"
+  /// and the [value] is 123.
   void send(String message);
 
-  /// Adds a listener for Bluetooth messages
+  /// Adds a listener for Bluetooth messages.
+  ///
+  /// Messages received from the Bluetooth device are formatted
+  /// as [key] (a string) -> comma -> [value] (an integer) -> semi-colon.
+  ///
+  /// Example: "sensor_reading,123;" where the [key] is "sensor_reading"
+  /// and the [value] is 123.
   void addBluetoothListener(void Function(String message) listener);
 
   /// Flag that determines if the mobile device is paired with the
@@ -80,7 +91,7 @@ class BluesyGenericService extends BluesyService {
                   _message += char;
                   if (char == ";") {
                     if (isConnected) {
-                      print("Data recieved: $_message");
+                      print("Message recieved: $_message");
                       _listeners.forEach((listener) {
                         listener(_message);
                       });
