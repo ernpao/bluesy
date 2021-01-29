@@ -1,3 +1,8 @@
+## [0.1.0] - 1/30/2021
+* Refactored BluesyWidget to enable support for multiple keys per widget.
+* Created the BluesyGenericWidget.
+
+
 ## [0.0.3] - 1/27/2021
 * Updated docs and property names for clarity.
 
