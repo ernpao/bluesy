@@ -52,6 +52,25 @@ class _BluesyWidgetsDemoScreen extends StatelessWidget {
             ),
           ),
         ),
+        BluesyGenericWidget(
+          name: "Bluesy Generic Widget Sample",
+          keys: [
+            "Data_0",
+            "Data_1",
+            "Data_2",
+            "Data_3",
+          ],
+          builder: (context, propertyValueSetter, keyValueMap) {
+            final List<Widget> children = [];
+            keyValueMap.forEach((key, value) {
+              children.add(Text("$key: $value"));
+            });
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32.0),
+              child: Column(children: children),
+            );
+          },
+        ),
         _DisconnectSection(),
       ],
     );
@@ -93,29 +112,32 @@ class _ConnectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bluesy = Provider.of<BluesyService>(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: RaisedButton(
-              child: Text("Connect"),
-              onPressed: () {
-                bluesy.connect();
-              },
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: RaisedButton(
+                child: Text("Connect"),
+                onPressed: () {
+                  bluesy.connect();
+                },
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Connect to HC-05",
-            textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Connect to HC-05",
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

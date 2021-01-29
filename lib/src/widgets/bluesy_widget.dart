@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../framework/bluesy_service.dart';
 
@@ -54,7 +54,7 @@ class _BluesyWidgetState extends State<BluesyWidget> {
   Widget build(BuildContext context) {
     _bluetoothService = Provider.of<BluesyService>(context);
     _bluetoothService.addBluetoothListener(widget.name, (message) {
-      int commaPos = message.lastIndexOf(",");
+      int commaPos = message.indexOf(",");
       String key = message.substring(0, commaPos);
 
       if (widget.keys.contains(key)) {
