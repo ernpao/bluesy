@@ -12,9 +12,7 @@ class BluesySampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bluesy Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.light(),
       home: Scaffold(
           body: BluesyServiceProvider(
         service: BluesyGenericService("HC-05 JSON Test"),
