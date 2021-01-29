@@ -20,13 +20,13 @@ class BluesySampleApp extends StatelessWidget {
         service: BluesyGenericService("HC-05 JSON Test"),
         builder: (BuildContext context, Widget child) {
           final bluesy = Provider.of<BluesyService>(context);
-          if (!bluesy.isConnected) {
+          if (bluesy.isConnected) {
+            return _BluesyWidgetsDemoScreen();
+          } else {
             if (bluesy.isConnecting) {
               return _LoadingScreen();
             }
             return _ConnectScreen();
-          } else {
-            return _BluesyWidgetsDemoScreen();
           }
         },
       )),
