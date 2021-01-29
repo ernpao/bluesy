@@ -30,7 +30,10 @@ abstract class BluesyService extends ChangeNotifier {
   ///
   /// Example: "sensor_reading,123;" where the [key] is "sensor_reading"
   /// and the [value] is 123.
-  void addBluetoothListener(void Function(String message) listener);
+  void addBluetoothListener(
+    String name,
+    void Function(String message) callback,
+  );
 
   /// Flag that determines if the mobile device is paired with the
   /// target device identified by [deviceName]
@@ -52,7 +55,7 @@ class BluesyGenericService extends BluesyService {
   BluetoothConnection _connection;
 
   String _message = "";
-  List<Function> _listeners = [];
+  Map<String, Function(String)> _listeners = {};
 
   @override
   void dispose() {
@@ -92,8 +95,8 @@ class BluesyGenericService extends BluesyService {
                   if (char == ";") {
                     if (isConnected) {
                       print("Message recieved: $_message");
-                      _listeners.forEach((listener) {
-                        listener(_message);
+                      _listeners.keys.forEach((listenerName) {
+                        _listeners[listenerName](_message);
                       });
                     }
                     _message = "";
@@ -126,15 +129,19 @@ class BluesyGenericService extends BluesyService {
   Future<void> disconnect({bool notifyListeners = true}) async {
     _connection?.dispose();
     _connection = null;
-    _listeners = [];
+    _listeners = {};
     if (notifyListeners) {
       this.notifyListeners();
     }
   }
 
   @override
-  void addBluetoothListener(void Function(String message) listener) {
-    _listeners.add(listener);
+  void addBluetoothListener(
+    String name,
+    void Function(String message) callback,
+  ) {
+    // assert(!_listeners.keys.contains(name));
+    _listeners[name] = callback;
   }
 
   @override

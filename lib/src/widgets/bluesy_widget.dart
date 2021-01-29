@@ -3,59 +3,69 @@ import 'package:provider/provider.dart';
 import '../framework/bluesy_service.dart';
 
 abstract class BluesyWidget extends StatefulWidget {
-  /// The key string assosciated with the property value of this widget
-  final String propertyKey;
+  /// Name of the widget to register to the Bluesy listener map
+  final String name;
 
-  BluesyWidget(this.propertyKey);
+  /// The key strings assosciated to this widget
+  final List<String> keys;
+
+  BluesyWidget({
+    @required this.name,
+    @required this.keys,
+  });
 
   @override
   _BluesyWidgetState createState() => _BluesyWidgetState();
 
   /// Builder method for a Bluesy widget. You can pass an integer to
   /// the [propertyValueSetter] function provided. Doing so will send a key-value pair
-  /// message to the paired bluetooth device, with the key being the [propertyKey]
+  /// message to the paired bluetooth device, with the key being the [keys]
   /// string of the Bluesy widget.
 
   Widget build(
     BuildContext context,
-    void Function(int value) propertyValueSetter,
-    int currentPropertyValue,
+    void Function(String key, int value) propertyValueSetter,
+    Map<String, int> keyValueMap,
   );
 }
 
 class _BluesyWidgetState extends State<BluesyWidget> {
-  int _propertyValue = 0;
+  Map<String, int> _keyValueMap;
   BluesyService _bluetoothService;
 
   @override
   void initState() {
+    _keyValueMap = {};
+    widget.keys.forEach((_key) {
+      print(_key);
+      _keyValueMap[_key] = 0;
+    });
     super.initState();
   }
 
-  void _setPropertyValue(int value) {
-    _bluetoothService.send("${widget.propertyKey},$value;");
+  void _setPropertyValue(String key, int value) {
+    _bluetoothService.send("$key,$value;");
     setState(() {
-      _propertyValue = value;
+      _keyValueMap[key] = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     _bluetoothService = Provider.of<BluesyService>(context);
-    _bluetoothService.addBluetoothListener((message) {
-      // print("Received message from Bluesy: " + message);
-
+    _bluetoothService.addBluetoothListener(widget.name, (message) {
       int commaPos = message.lastIndexOf(",");
-      int delimiterPos = message.lastIndexOf(";");
       String key = message.substring(0, commaPos);
-      if (key == widget.propertyKey) {
+
+      if (widget.keys.contains(key)) {
+        int delimiterPos = message.lastIndexOf(";");
         String valueStr = message.substring(commaPos + 1, delimiterPos);
         int value = int.parse(valueStr);
         setState(() {
-          _propertyValue = value;
+          _keyValueMap[key] = value;
         });
       }
     });
-    return widget.build(context, _setPropertyValue, _propertyValue);
+    return widget.build(context, _setPropertyValue, _keyValueMap);
   }
 }
