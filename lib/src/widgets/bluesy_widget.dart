@@ -10,8 +10,8 @@ abstract class BluesyWidget extends StatefulWidget {
   final List<String> keys;
 
   BluesyWidget({
-    @required this.name,
-    @required this.keys,
+    required this.name,
+    required this.keys,
   });
 
   @override
@@ -30,8 +30,8 @@ abstract class BluesyWidget extends StatefulWidget {
 }
 
 class _BluesyWidgetState extends State<BluesyWidget> {
-  Map<String, int> _keyValueMap;
-  BluesyService _bluetoothService;
+  Map<String, int> _keyValueMap = {};
+  BluesyService? _bluetoothService;
 
   @override
   void initState() {
@@ -44,16 +44,18 @@ class _BluesyWidgetState extends State<BluesyWidget> {
   }
 
   void _setPropertyValue(String key, int value) {
-    _bluetoothService.send("$key,$value;");
-    setState(() {
-      _keyValueMap[key] = value;
-    });
+    if (_bluetoothService != null) {
+      _bluetoothService!.send("$key,$value;");
+      setState(() {
+        _keyValueMap[key] = value;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     _bluetoothService = Provider.of<BluesyService>(context);
-    _bluetoothService.addBluetoothListener(widget.name, (message) {
+    _bluetoothService!.addBluetoothListener(widget.name, (message) {
       int commaPos = message.indexOf(",");
       String key = message.substring(0, commaPos);
 

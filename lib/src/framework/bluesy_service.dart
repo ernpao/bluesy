@@ -51,8 +51,8 @@ class BluesyGenericService extends BluesyService {
   BluesyGenericService(this.pairedDeviceName);
 
   bool _isConnecting = false;
-  BluetoothDevice _device;
-  BluetoothConnection _connection;
+  BluetoothDevice? _device;
+  BluetoothConnection? _connection;
 
   String _message = "";
   Map<String, Function(String)> _listeners = {};
@@ -65,7 +65,7 @@ class BluesyGenericService extends BluesyService {
 
   @override
   bool get isConnected {
-    return (_connection == null) ? false : _connection?.isConnected;
+    return (_connection == null) ? false : _connection!.isConnected;
   }
 
   @override
@@ -77,48 +77,58 @@ class BluesyGenericService extends BluesyService {
     _isConnecting = true;
     notifyListeners();
 
-    FlutterBluetoothSerial.instance.getBondedDevices().then((devices) {
-      for (var i = 0; i < devices.length; i++) {
-        var device = devices[i];
-        if (device.name == pairedDeviceName) {
-          _device = device;
-          _isConnecting = true;
-          notifyListeners();
-          BluetoothConnection.toAddress(_device.address).then((connection) {
-            print('Connected to the device');
-            _connection = connection;
-            _connection.input.listen(
-              (Uint8List data) {
-                String incoming = ascii.decode(data);
-                incoming.split("").forEach((char) {
-                  _message += char;
-                  if (char == ";") {
-                    if (isConnected) {
-                      print("Message recieved: $_message");
-                      _listeners.keys.forEach((listenerName) {
-                        _listeners[listenerName](_message);
-                      });
-                    }
-                    _message = "";
+    print('Bluesy connecting...');
+
+    var devices = await FlutterBluetoothSerial.instance.getBondedDevices();
+
+    if (devices.isEmpty) {
+      print('No paired devices found!');
+      _isConnecting = false;
+      notifyListeners();
+      return;
+    }
+
+    for (var i = 0; i < devices.length; i++) {
+      var device = devices[i];
+      if (device.name == pairedDeviceName) {
+        print('Bluetooth device found: ${device.name}');
+        _device = device;
+        _isConnecting = true;
+        notifyListeners();
+        BluetoothConnection.toAddress(_device!.address).then((connection) {
+          print('Connected to the device');
+          _connection = connection;
+          _connection!.input!.listen(
+            (Uint8List data) {
+              String incoming = ascii.decode(data);
+              incoming.split("").forEach((char) {
+                _message += char;
+                if (char == ";") {
+                  if (isConnected) {
+                    print("Message recieved: $_message");
+                    _listeners.keys.forEach((listenerName) {
+                      _listeners[listenerName]!(_message);
+                    });
                   }
-                });
-              },
-            );
+                  _message = "";
+                }
+              });
+            },
+          );
 
-            _isConnecting = false;
+          _isConnecting = false;
 
-            notifyListeners();
-          });
-        }
+          notifyListeners();
+        });
       }
-    });
+    }
   }
 
   @override
   void send(String message) async {
-    if (_connection != null && _connection.isConnected) {
-      _connection.output.add(utf8.encode(message));
-      await _connection.output.allSent;
+    if (_connection != null && _connection!.isConnected) {
+      _connection!.output.add(Uint8List.fromList(utf8.encode(message)));
+      await _connection!.output.allSent;
     }
   }
 

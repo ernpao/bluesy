@@ -16,7 +16,7 @@ class BluesySampleApp extends StatelessWidget {
       home: Scaffold(
           body: BluesyServiceProvider(
         service: BluesyGenericService("HC-05 JSON Test"),
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           final bluesy = Provider.of<BluesyService>(context);
           if (bluesy.isConnected) {
             return _BluesyWidgetsDemoScreen();
@@ -86,7 +86,7 @@ class _DisconnectSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("Disconnect"),
               onPressed: () {
                 bluesy.disconnect();
@@ -119,7 +119,7 @@ class _ConnectScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text("Connect"),
                 onPressed: () {
                   bluesy.connect();

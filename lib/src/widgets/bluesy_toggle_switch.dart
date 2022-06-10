@@ -4,8 +4,8 @@ import '../widgets/bluesy_widget.dart';
 class BluesyToggleSwitch extends BluesyWidget {
   final String name;
   BluesyToggleSwitch({
-    @required this.name,
-    @required String key,
+    required this.name,
+    required String key,
   }) : super(
           name: name,
           keys: [key],

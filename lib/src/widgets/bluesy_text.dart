@@ -5,22 +5,22 @@ class BluesyText extends BluesyWidget {
   final String name;
 
   /// The size of glyphs (in logical pixels) to use when painting the text.
-  final double fontSize;
+  final double? fontSize;
 
   /// How the text should be aligned horizontally.
-  final TextAlign textAlign;
+  final TextAlign? textAlign;
 
   /// The typeface variant to use when drawing the letters (e.g., italics).
-  final FontStyle fontStyle;
+  final FontStyle? fontStyle;
 
   /// The typeface thickness to use when painting the text (e.g., bold).
-  final FontWeight fontWeight;
+  final FontWeight? fontWeight;
 
   /// The color to use when painting the text.
-  final Color color;
+  final Color? color;
   BluesyText({
-    @required this.name,
-    @required String key,
+    required this.name,
+    required String key,
     this.fontSize,
     this.textAlign,
     this.color,

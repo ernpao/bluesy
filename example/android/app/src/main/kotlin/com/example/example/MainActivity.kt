@@ -1,4 +1,4 @@
-package com.bluesy.example
+package online.ernpao.bluesy_example
 
 import io.flutter.embedding.android.FlutterActivity
 

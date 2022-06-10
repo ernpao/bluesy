@@ -15,10 +15,13 @@ class BluesyGenericWidget extends BluesyWidget {
   ) builder;
 
   BluesyGenericWidget({
-    @required this.name,
-    @required this.keys,
-    @required this.builder,
-  });
+    required this.name,
+    required this.keys,
+    required this.builder,
+  }) : super(
+          keys: keys,
+          name: name,
+        );
 
   @override
   Widget build(
